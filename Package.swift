@@ -48,7 +48,7 @@ let basicSwiftSettings: [SwiftSetting] = try! [
 }
 
 let package = Package(
-  name: "SwiftStandardLibrary",
+  name: "swift-standard-library",
   platforms: [
     .macOS(.v15),
     .iOS(.v13),
@@ -83,10 +83,17 @@ let package = Package(
     .trait(name: "UnicodeDataTables"),
   ],
   targets: [
+    .target(
+      name: "SwiftShims",
+      path: "stdlib/public/SwiftShims/swift/shims",
+      publicHeadersPath: "."
+    ),
+
     // Swift standard library
     .target(
       name: "Swift",
       dependencies: [
+        "SwiftShims",
         .target(
           name: "SwiftUnicodeDataTables",
           condition: .when(traits: ["UnicodeDataTables"])
