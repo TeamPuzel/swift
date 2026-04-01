@@ -235,8 +235,34 @@ let package = Package(
 // availability macro definitions.
 var availabilityMacros: [String] {
   get throws {
-    let allLines = try String(contentsOfFile: Context.packageDirectory + "/utils/availability-macros.def", encoding: .utf8)
+    // Due to https://github.com/swiftlang/swift-package-manager/issues/5610,
+    // we're unable to use packageDirectory, so hardcode the string.
+    #if false
+    let allLines = try String(contentsOfFile: Context.packageDirectory + "utils/availability-macros.def", encoding: .utf8)
       .split(separator: "\n")
+    #else
+    let allLines = """
+                                                                                      SwiftStdlib 9999:macOS 9999, iOS 9999, watchOS 9999, tvOS 9999
+                                                                                      SwiftStdlib 5.0:macOS 10.14.4, iOS 12.2, watchOS 5.2, tvOS 12.2
+                                                                                      SwiftStdlib 5.1:macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0
+                                                                                      SwiftStdlib 5.2:macOS 10.15.4, iOS 13.4, watchOS 6.2, tvOS 13.4
+                                                                                      SwiftStdlib 5.3:macOS 11.0, iOS 14.0, watchOS 7.0, tvOS 14.0
+                                                                                      SwiftStdlib 5.4:macOS 11.3, iOS 14.5, watchOS 7.4, tvOS 14.5
+                                                                                      SwiftStdlib 5.5:macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0
+                                                                                      SwiftStdlib 5.6:macOS 12.3, iOS 15.4, watchOS 8.5, tvOS 15.4
+                                                                                      SwiftStdlib 5.7:macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0
+                                                                                      SwiftStdlib 5.8:macOS 13.3, iOS 16.4, watchOS 9.4, tvOS 16.4
+                                                                                      SwiftStdlib 5.9:macOS 14.0, iOS 17.0, watchOS 10.0, tvOS 17.0
+                                                                                      SwiftStdlib 5.10:macOS 14.4, iOS 17.4, watchOS 10.4, tvOS 17.4, visionOS 1.1
+                                                                                      SwiftStdlib 6.0:macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0
+                                                                                      SwiftStdlib 6.1:macOS 15.4, iOS 18.4, watchOS 11.4, tvOS 18.4, visionOS 2.4
+                                                                                      SwiftStdlib 6.2:macOS 26.0, iOS 26.0, watchOS 26.0, tvOS 26.0, visionOS 26.0
+                                                                                      SwiftStdlib 6.3:macOS 26.4, iOS 26.4, watchOS 26.4, tvOS 26.4, visionOS 26.4
+                                                                                      SwiftStdlib 6.4:macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, visionOS 9999
+                                                                                      SwiftCompatibilitySpan 5.0:macOS 10.14.4, iOS 12.2, watchOS 5.2, tvOS 12.2, visionOS 1.0
+                                                                                      SwiftCompatibilitySpan 6.2:macOS 26.0, iOS 26.0, watchOS 26.0, tvOS 26.0, visionBacktracing 6.2: macOS 26.0
+      """.split(separator: "\n")
+    #endif
      let foundMacros = allLines.compactMap { (line) -> String? in
       if line.contains("#") { return nil }
 
