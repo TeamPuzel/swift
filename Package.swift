@@ -263,7 +263,7 @@ var availabilityMacros: [String] {
       SwiftCompatibilitySpan 6.2:macOS 26.0, iOS 26.0, watchOS 26.0, tvOS 26.0, visionBacktracing 6.2: macOS 26.0
       """.split(separator: "\n")
     #endif
-     let foundMacros = allLines.compactMap { (line) -> String? in
+    let foundMacros = allLines.compactMap { (line) -> String? in
       if line.contains("#") { return nil }
 
       guard let colonIndex = line.firstIndex(of: ":") else {
@@ -278,12 +278,11 @@ var availabilityMacros: [String] {
     // Create "StdlibDeploymentTarget" counterparts for "SwiftStdlib"
     // availability macros.
     return foundMacros + foundMacros.compactMap { macro in
-      guard macro.contains("SwiftStdlib") else {
+      if !macro.contains("SwiftStdlib") {
         return nil
       }
 
-      let afterPrefix = macro.index(macro.startIndex, offsetBy: "SwiftStdlib".count)
-      return "StdlibDeploymentTarget" + String(macro[afterPrefix...])
+      return macro.replacingOccurrences(of: "SwiftStdlib", with: "StdlibDeploymentTarget")
     }
   }
 }
