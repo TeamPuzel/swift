@@ -109,7 +109,7 @@ let package = Package(
         // TODO: Figure out whether we can get this enabled everywhere,
         // using #ifs in the sources if necessary.
         "ObjectIdentifier+DebugDescription.swift",
-        
+
         // TODO: This file is unused and should probably be removed.
         "EitherSequence.swift",
 
@@ -158,6 +158,7 @@ let package = Package(
       path: "stdlib/public/stubs/Unicode",
       sources: [
         "UnicodeData.cpp",
+        "UnicodeEmoji.cpp",
         "UnicodeGrapheme.cpp",
         "UnicodeNormalization.cpp",
         "UnicodeScalarProps.cpp",
@@ -271,7 +272,7 @@ var availabilityMacros: [String] {
       }
 
       // Under embedded swift, all stdlib APIs should be available always.
-      // Replace all availability macros with very very old OS version.      
+      // Replace all availability macros with very very old OS version.
       return String(line[..<colonIndex]) + ":macOS 10.9, iOS 7.0, watchOS 2.0, tvOS 9.0, visionOS 1.0"
     }
 
